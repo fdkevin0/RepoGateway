@@ -1,0 +1,5 @@
+GITHUB_WEBHOOK_SECRET=change-me
+# PKCS#8 PEM. GitHub issues PKCS#1 keys; convert with:
+#   openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in app.pem -out app.pkcs8.pem
+GITHUB_APP_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+AMP_API_KEY=sgamp_...

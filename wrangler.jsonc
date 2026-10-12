@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "repogateway",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+
+  // Repo config parsed from the config issue, cached per repository.
+  // Create with: npx wrangler kv namespace create CONFIG_CACHE
+  "kv_namespaces": [{ "binding": "CONFIG_CACHE", "id": "<your-kv-namespace-id>" }],
+
+  // Agent jobs are queued so the webhook can return 2xx to GitHub within its 10s budget.
+  // Create with: npx wrangler queues create repogateway-agent-jobs
+  "queues": {
+    "producers": [{ "binding": "AGENT_JOBS", "queue": "repogateway-agent-jobs" }],
+    "consumers": [{ "queue": "repogateway-agent-jobs", "max_retries": 3 }]
+  },
+
+  "vars": {
+    "GITHUB_APP_ID": "",
+    "CONFIG_ISSUE_LABEL": "repogateway-config"
+  }
+  // Secrets (wrangler secret put …): GITHUB_WEBHOOK_SECRET, GITHUB_APP_PRIVATE_KEY, AMP_API_KEY
+}
